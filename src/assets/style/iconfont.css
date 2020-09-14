@@ -1,0 +1,14 @@
+.iconfont {
+  width: 1rem;
+  height: 1rem;
+  background-size: 100% 100%;
+}
+.icon-user {
+  background-image: url(../images/iconfont/user.png);
+}
+.icon-password {
+  background-image: url(../images/iconfont/password.png);
+}
+i {
+  display: block;
+}
