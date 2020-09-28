@@ -21,6 +21,8 @@ router.post('/', function(req, res, next) {
         res.status(401).end()
       }
     }
+
+    res.status(401).end()
   })
 });
 

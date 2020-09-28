@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+    <div class="cover" @click="exit"></div>
     <div class="login">
       <h3>欢迎登录<img src="../assets/images/logo.png" alt="logo"></h3>
       <div :class="{inputError: userIDError}">
@@ -8,11 +9,11 @@
         <span>{{userIDInfo}}</span>
       </div>
       <div :class="{inputError: passwordError}">
-        <input type="password" placeholder="密码" id="password" v-model="password" @blur="onBlur($event)">
+        <input ref="passwordInput" type="password" placeholder="密码" id="password" v-model="password" @blur="onBlur($event)">
         <i class="iconfont icon-password"></i>
         <span>{{passwordInfo}}</span>
       </div>
-      <button class="btn" @click="confirm">登录</button>
+      <button ref="loginBtn" class="btn" @click="confirm">登录</button>
       <button class="btn" @click="reset">重置</button>
     </div>
   </div>
@@ -36,7 +37,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setUserID', 'setToken']),
+    ...mapMutations(['setUserID', 'setToken', 'toggleLoginBlock']),
     onBlur (e) {
       const value = e.target.value.trim()
       const inputId = e.target.id
@@ -55,6 +56,7 @@ export default {
       this.passwordInfo = ''
       this.userIDError = undefined
       this.passwordError = undefined
+      this.$refs.defaultFocus.focus()
     },
     confirm () {
       if (this.userIDError || this.passwordError) return
@@ -71,7 +73,7 @@ export default {
           this.setUserID(this.userID)
           this.setToken(res.data.token)
           window.sessionStorage.setItem('token', res.data.token)
-          this.$router.go(-1)
+          this.toggleLoginBlock()
         } else {
           this.passwordError = true
           this.passwordInfo = '用户名或密码错误'
@@ -85,10 +87,24 @@ export default {
         console.log(err)
       }
       )
+    },
+    listenEnter (e) {
+      if (e.keyCode === 13) {
+        this.$refs.loginBtn.focus()
+        this.confirm()
+        this.$refs.passwordInput.focus()
+      }
+    },
+    exit () {
+      this.toggleLoginBlock()
     }
   },
   mounted () {
     this.$refs.defaultFocus.focus()
+    window.addEventListener('keypress', this.listenEnter)
+  },
+  unmounted () {
+    window.removeEventListener('keypress', this.listenEnter)
   }
 }
 </script>
@@ -96,18 +112,23 @@ export default {
 <style lang="less" scoped>
   .wrapper {
     min-height: 100vh;
-    background: linear-gradient(10deg, aquamarine, aliceblue);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    .cover {
+      background: rgba(0, 0, 0, 0.5);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
     .login {
       box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.2);
       padding: 0 4rem;
       width: 22rem;
       position: relative;
       background-color: aliceblue;
-      border-radius: 0.5rem;
+      border-radius: 0.3rem;
       h3 {
         font-size: 2rem;
         display: flex;

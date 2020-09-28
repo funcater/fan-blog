@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <myNav active="home"/>
+  <div class="message">
+    <myNav active="message"/>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 import myNav from '@/components/myNav.vue'
 
 export default {
-  name: 'home',
+  name: 'message',
   components: {
     myNav
   }
@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .home {
+  .message {
     padding-top: 3rem;
     min-height: 100vh;
   }

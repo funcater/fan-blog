@@ -2,8 +2,9 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    userID: '',
-    token: ''
+    userID: undefined,
+    token: undefined,
+    showLoginBlock: false
   },
   mutations: {
     setUserID (state, userID) {
@@ -11,6 +12,9 @@ export default createStore({
     },
     setToken (state, token) {
       state.token = token
+    },
+    toggleLoginBlock (state) {
+      state.showLoginBlock = !state.showLoginBlock
     }
   },
   actions: {
