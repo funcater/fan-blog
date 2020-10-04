@@ -1,11 +1,11 @@
 <template>
-  <div class="myDev">
+  <div class="myNav">
     <router-link to="/" class="fl">
       <img src="../assets/images/logo.png" alt="">
     </router-link>
     <div class="nav fl" ref="nav">
-      <router-link to="/" @click="changeActiveItem">首页</router-link>
-      <router-link to="/message" @click="changeActiveItem">留言</router-link>
+      <router-link to="/home">首页</router-link>
+      <router-link to="/message">留言</router-link>
     </div>
     <div class="userBlock fr">
       <div class="userDetail" v-if="userID">
@@ -21,42 +21,24 @@
 import { mapMutations, mapState } from 'vuex'
 
 export default {
-  name: 'myDev',
-  props: ['active'],
-  data () {
-    return {
-      isLogin: false,
-      activeItem: {
-        home: 0,
-        message: 1
-      }
-    }
-  },
+  name: 'myNav',
   computed: {
     ...mapState(['userID'])
   },
   methods: {
     ...mapMutations(['toggleLoginBlock', 'setUserID', 'setToken']),
-    changeActiveItem (e) {
-      const navItems = this.$refs.nav.querySelectorAll('a')
-      navItems.forEach(item => item.classList.remove('active'))
-      e.target.classList.add('active')
-    },
     logout () {
       this.setUserID()
       this.setToken()
+      // this.$router.push({ name: '/index' })
     }
-  },
-  mounted () {
-    const navItems = this.$refs.nav.querySelectorAll('a')
-    navItems[this.activeItem[this.active]].classList.add('active')
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-  .myDev {
+  .myNav {
     position: fixed;
     top: 0;
     right: 0;
@@ -82,9 +64,9 @@ export default {
         &:hover {
           opacity: 0.9;
         }
-      }
-      .active {
-        color: orange;
+        &.router-link-active {
+          color: orange;
+        }
       }
     }
     .userBlock {

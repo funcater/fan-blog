@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-export default function http (config, success, failure) {
-  const instance = axios.create({})
-  instance(config).then(res => success(res)).catch(err => failure(err))
-}
+axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.withCredentials = true
+
+const instance = axios.create({})
+
+export default instance

@@ -4,12 +4,12 @@
     <div class="login">
       <h3>欢迎登录<img src="../assets/images/logo.png" alt="logo"></h3>
       <div :class="{inputError: userIDError}">
-        <input ref="defaultFocus" type="text" placeholder="用户名" id="userID" v-model="userID" @blur="onBlur($event)">
-        <i class="iconfont icon-user"></i>
+        <input @keypress.enter="listenEnter" ref="defaultFocus" type="text" placeholder="用户名" id="userID" v-model="userID" @blur="onBlur($event)">
+        <i class="iconfont icon-username"></i>
         <span>{{userIDInfo}}</span>
       </div>
       <div :class="{inputError: passwordError}">
-        <input ref="passwordInput" type="password" placeholder="密码" id="password" v-model="password" @blur="onBlur($event)">
+        <input @keypress.enter="listenEnter" ref="passwordInput" type="password" placeholder="密码" id="password" v-model="password" @blur="onBlur($event)">
         <i class="iconfont icon-password"></i>
         <span>{{passwordInfo}}</span>
       </div>
@@ -67,33 +67,27 @@ export default {
           userID: this.userID,
           password: this.password
         }
-      },
-      res => {
-        if (res.status === 200) {
-          this.setUserID(this.userID)
-          this.setToken(res.data.token)
-          window.sessionStorage.setItem('token', res.data.token)
-          this.toggleLoginBlock()
-        } else {
-          this.passwordError = true
-          this.passwordInfo = '用户名或密码错误'
-          this.password = ''
-        }
-      },
-      err => {
+      }).then(res => {
+        this.setUserID(this.userID)
+        this.setToken(res.data.token)
+        sessionStorage.setItem('token', res.data.token)
+        this.toggleLoginBlock()
+        // this.$router.push({ name: '/admin/index' })
+      }).catch(err => {
         this.passwordError = true
-        this.passwordInfo = '用户名或密码错误'
         this.password = ''
+        if (err.response && err.response.status === 401) {
+          this.passwordInfo = '用户名或密码错误'
+          return
+        }
+        this.passwordInfo = '网络连接失败'
         console.log(err)
-      }
-      )
+      })
     },
     listenEnter (e) {
-      if (e.keyCode === 13) {
-        this.$refs.loginBtn.focus()
-        this.confirm()
-        this.$refs.passwordInput.focus()
-      }
+      this.$refs.loginBtn.focus()
+      this.confirm()
+      this.$refs.passwordInput.focus()
     },
     exit () {
       this.toggleLoginBlock()
@@ -101,10 +95,6 @@ export default {
   },
   mounted () {
     this.$refs.defaultFocus.focus()
-    window.addEventListener('keypress', this.listenEnter)
-  },
-  unmounted () {
-    window.removeEventListener('keypress', this.listenEnter)
   }
 }
 </script>
@@ -127,7 +117,7 @@ export default {
       padding: 0 4rem;
       width: 22rem;
       position: relative;
-      background-color: aliceblue;
+      background-color: #fff;
       border-radius: 0.3rem;
       h3 {
         font-size: 2rem;
@@ -154,16 +144,17 @@ export default {
         }
         i {
           position: absolute;
-          transform: translateY(-1.7rem);
+          transform: translateY(0.5rem);
+          left: 0;
         }
         &.inputError input{
           box-shadow: 0 0 2px 1px rgb(245, 138, 138);
         }
         span {
           color: rgb(243, 82, 82);
-          font-size: 0.5rem;
+          font-size: 0.6rem;
           position: absolute;
-          bottom: -0.9rem;
+          bottom: -1rem;
           left: 0;
         }
       }
