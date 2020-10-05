@@ -18,6 +18,9 @@ a {
   text-decoration: none;
   color: #2c3e50;
 }
+a:hover {
+  opacity: 0.8;
+}
 .fl {
   float: left;
 }

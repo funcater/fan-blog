@@ -61,9 +61,6 @@ export default {
       a {
         padding: 0 1rem;
         color: #fff;
-        &:hover {
-          opacity: 0.9;
-        }
         &.router-link-active {
           color: orange;
         }

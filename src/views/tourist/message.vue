@@ -1,24 +1,19 @@
 <template>
   <div class="message">
-    <myNav active="message"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import myNav from '@/components/myNav.vue'
 
 export default {
-  name: 'message',
-  components: {
-    myNav
-  }
+  name: 'message'
 }
 </script>
 
 <style lang="less" scoped>
   .message {
     padding-top: 3rem;
-    min-height: 100vh;
+    min-height: calc(100vh - 3.4rem);
   }
 </style>

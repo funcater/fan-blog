@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import mutations from './mutations'
 
 export default createStore({
   state: {
@@ -6,17 +7,7 @@ export default createStore({
     token: undefined,
     showLoginBlock: false
   },
-  mutations: {
-    setUserID (state, userID) {
-      state.userID = userID
-    },
-    setToken (state, token) {
-      state.token = token
-    },
-    toggleLoginBlock (state) {
-      state.showLoginBlock = !state.showLoginBlock
-    }
-  },
+  mutations: mutations,
   actions: {
   },
   modules: {
