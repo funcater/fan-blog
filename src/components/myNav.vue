@@ -40,6 +40,7 @@ export default {
 <style scoped lang="less">
   .myNav {
     position: fixed;
+    z-index: 98;
     top: 0;
     right: 0;
     width: 100%;

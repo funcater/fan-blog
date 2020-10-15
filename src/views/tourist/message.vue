@@ -13,7 +13,9 @@ export default {
 
 <style lang="less" scoped>
   .message {
-    padding-top: 3rem;
-    min-height: calc(100vh - 3.4rem);
+    min-height: calc(100vh - 8.4rem);
+    width: 38rem;
+    background: #fff;
+    margin-right: 1rem;
   }
 </style>

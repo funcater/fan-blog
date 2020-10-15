@@ -7,5 +7,26 @@ export default {
   },
   toggleLoginBlock (state) {
     state.showLoginBlock = !state.showLoginBlock
+  },
+  setArticles (state, articles) {
+    state.articles = [...state.articles, ...articles]
+  },
+  toggleHasMoreArticles (state, hasMoreArticles) {
+    state.hasMoreArticles = hasMoreArticles === undefined ? !state.hasMoreArticles : hasMoreArticles
+  },
+  toggleIsLoading (state, isLoading) {
+    state.isLoading = isLoading === undefined ? !state.isLoading : isLoading
+    if (state.isLoading) {
+      state.loadingAnimation = setInterval(() => {
+        if (state.loadingAnimationText.length === 3) {
+          state.loadingAnimationText = ''
+        } else {
+          state.loadingAnimationText = state.loadingAnimationText + '.'
+        }
+      }, 300)
+    } else {
+      state.loadingAnimationText = ''
+      clearInterval(state.loadingAnimation)
+    }
   }
 }

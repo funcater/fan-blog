@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const sha1 = require('sha1')
 
 router.post('/', function(req, res, next) {
-  db.User.findOne({ userID: req.body.userID}, (err, doc) => {
+  db.User.findOne({ userID: req.body.userID }, (err, doc) => {
     const payload = { userID: req.body.userID }
 
     if (err) {

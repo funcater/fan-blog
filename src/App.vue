@@ -6,7 +6,7 @@
 <script>
 // @ is an alias to /src
 import login from '@/components/login.vue'
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -15,6 +15,12 @@ export default {
   },
   computed: {
     ...mapState(['showLoginBlock'])
+  },
+  methods: {
+    ...mapActions(['getArticles'])
+  },
+  mounted () {
+    this.getArticles()
   }
 }
 </script>
