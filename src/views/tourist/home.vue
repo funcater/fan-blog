@@ -1,9 +1,9 @@
 <template>
   <div class="home" ref="container">
     <div v-for="(article, index) in articles" :key="index" class="article">
-      <h4 class="title"><a href="">{{article.title}}</a></h4>
+      <h4 class="title"><a @click="checkDetail(article._id)">{{article.title}}</a></h4>
       <div class="date iconfont icon-time">{{getTime(article.date)}}</div>
-      <p class="content">{{article.content}}</p>
+      <p class="content">{{parseContent(article.content)}}</p>
     </div>
     <p class="loading" @click="getMoreArticles({ limit: 4, skip: this.articles.length })">
       {{isLoading ? '正在拼命加载中' : hasMoreArticles ? '下拉加载更多' : '已加载全部'}}{{loadingAnimationText}}
@@ -13,14 +13,22 @@
 
 <script>
 // @ is an alias to /src
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import marked from 'marked'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github.css'
+
+marked.setOptions({
+  highlight: function (code) {
+    return hljs.highlightAuto(code).value
+  }
+})
 
 export default {
   name: 'home',
   computed: { ...mapState(['articles', 'hasMoreArticles', 'isLoading', 'loadingAnimationText']) },
   methods: {
     ...mapActions(['getArticles']),
-    ...mapMutations(['toggleIsLoading']),
     getTime (date) {
       const time = new Date(date)
       return time.toLocaleString()
@@ -30,6 +38,17 @@ export default {
       if (window.scrollY + window.innerHeight < container.offsetTop + container.offsetHeight) return
       if (this.isLoading || !this.hasMoreArticles) return
       this.getArticles({ limit: 4, skip: this.articles.length })
+    },
+    checkDetail (id) {
+      this.$router.push({
+        name: 'article',
+        params: {
+          id: id
+        }
+      })
+    },
+    parseContent (content) {
+      return marked(content || '').replace(/<[^>]*>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x27;/g, '"')
     }
   },
   mounted () {
@@ -58,6 +77,7 @@ export default {
       width: 100%;
       .title {
         margin: 0rem;
+        cursor: pointer;
       }
       .date {
         font-size: 0.8rem;
@@ -73,6 +93,7 @@ export default {
         overflow: hidden;
         white-space: pre-wrap;
         margin: 0;
+        font-size: 0.8rem;
       }
     }
     .loading {
