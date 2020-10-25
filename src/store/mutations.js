@@ -28,5 +28,11 @@ export default {
       state.loadingAnimationText = ''
       clearInterval(state.loadingAnimation)
     }
+  },
+  setRecommendArticles (state, recommendArticles) {
+    state.recommendArticles = recommendArticles
+  },
+  toggleIsRecommendLoading (state, isRecommendLoading) {
+    state.isRecommendLoading = isRecommendLoading
   }
 }

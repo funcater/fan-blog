@@ -18,6 +18,22 @@ export default {
       commit('toggleIsLoading', false)
     }).catch(err => {
       console.log(err)
+      commit('toggleIsLoading', false)
+    })
+  },
+  getRecommendArticles ({ commit }, payload) {
+    commit('toggleIsRecommendLoading', true)
+
+    http({
+      method: 'GET',
+      url: './article/random',
+      params: payload
+    }).then(res => {
+      commit('setRecommendArticles', res.data)
+      commit('toggleIsRecommendLoading', false)
+    }).catch(err => {
+      console.log(err)
+      commit('toggleIsRecommendLoading', false)
     })
   }
 }

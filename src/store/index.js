@@ -11,7 +11,9 @@ export default createStore({
     hasMoreArticles: true,
     isLoading: false,
     loadingAnimationText: '',
-    loadingAnimation: undefined
+    loadingAnimation: undefined,
+    recommendArticles: [],
+    isRecommendLoading: false
   },
   mutations: mutations,
   actions: actions

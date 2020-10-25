@@ -13,4 +13,27 @@ router.get('/all', function(req, res, next) {
     )
 })
 
+router.get('/random', function(req, res, next) {
+  const size = +req.query.size || 5
+  db.Article.aggregate( [ { $sample: { size: size } } ] )
+    .then(articles => {
+      articles.map(article => {
+        article.content = undefined
+        article.date = undefined
+      })
+      res.send(articles)
+    }).catch(err =>
+      console.log(err)
+    )
+})
+
+router.get('/', function(req, res, next) {
+  db.Article.find({_id: req.query.id})
+    .then(article => {
+      res.send(article)
+    }).catch(err =>
+      console.log(err)
+    )
+})
+
 module.exports = router
