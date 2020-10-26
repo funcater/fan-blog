@@ -5,7 +5,7 @@
       <span class="refresh iconfont icon-refresh" @click="refresh" ref="refresh">换一换</span>
     </span>
     <ul>
-      <li v-for="(article, index) in recommendArticles" :key="index" class="iconfont icon-li">{{article.title}}</li>
+      <li v-for="(article, index) in recommendArticles" :key="index" class="iconfont icon-li" @click="checkDetail(article._id)">{{article.title}}</li>
     </ul>
   </div>
 </template>
@@ -21,6 +21,14 @@ export default {
     ...mapActions(['getRecommendArticles']),
     refresh () {
       this.getRecommendArticles({ size: 5 })
+    },
+    checkDetail (id) {
+      this.$router.push({
+        name: 'article',
+        params: {
+          id: id
+        }
+      })
     }
   },
   mounted () {
@@ -62,6 +70,9 @@ export default {
         top: 0.15rem;
         left: -0.6rem;
       }
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
   ul {
@@ -70,9 +81,13 @@ export default {
       padding: 0.4rem;
       font-size: 0.8rem;
       text-align: justify;
+      cursor: pointer;
       &::before {
         font-size: 0.6rem;
         opacity: 0.4;
+      }
+      &:hover {
+        opacity: 0.8;
       }
     }
   }

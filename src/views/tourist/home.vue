@@ -77,7 +77,9 @@ export default {
       width: 100%;
       .title {
         margin: 0rem;
-        cursor: pointer;
+        a {
+          cursor: pointer;
+        }
       }
       .date {
         font-size: 0.8rem;

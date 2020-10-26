@@ -1,15 +1,15 @@
 <template>
   <div class="article">
-    <h4 class="title">{{getArticle().title}}</h4>
-    <div class="date iconfont icon-time">{{getTime(getArticle().date)}}</div>
-    <p class="content" v-html="parseContent(getArticle().content)"></p>
+    <h4 class="title">{{article.title}}</h4>
+    <div class="date iconfont icon-time">{{getTime(article.date)}}</div>
+    <p class="content" v-html="parseContent(article.content)"></p>
     <thumbUp class="thumbUp"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import { mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import marked from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
@@ -26,8 +26,10 @@ export default {
   components: {
     thumbUp
   },
-  computed: { ...mapState(['articles']) },
+  computed: { ...mapState(['articles', 'article']) },
   methods: {
+    ...mapActions(['getArticleByID']),
+    ...mapMutations(['setArticle']),
     getTime (date) {
       const time = new Date(date)
       return time.toLocaleString()
@@ -36,11 +38,23 @@ export default {
       return marked(content || '')
     },
     getArticle () {
-      return this.articles.filter(article => article._id === this.$route.params.id)[0]
+      const id = this.$route.params.id
+      const article = this.articles.filter(article => article._id === id)[0]
+      if (!article) {
+        this.getArticleByID({ id: id })
+      } else {
+        this.setArticle(article)
+      }
     }
   },
   created () {
     window.scrollTo(0, 0)
+    this.getArticle()
+  },
+  watch: {
+    $route () {
+      this.getArticle()
+    }
   }
 }
 </script>

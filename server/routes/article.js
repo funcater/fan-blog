@@ -28,7 +28,7 @@ router.get('/random', function(req, res, next) {
 })
 
 router.get('/', function(req, res, next) {
-  db.Article.find({_id: req.query.id})
+  db.Article.findOne({_id: req.query.id})
     .then(article => {
       res.send(article)
     }).catch(err =>

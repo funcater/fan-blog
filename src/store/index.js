@@ -13,7 +13,13 @@ export default createStore({
     loadingAnimationText: '',
     loadingAnimation: undefined,
     recommendArticles: [],
-    isRecommendLoading: false
+    isRecommendLoading: false,
+    article: {
+      title: undefined,
+      content: undefined,
+      date: undefined,
+      _id: undefined
+    }
   },
   mutations: mutations,
   actions: actions

@@ -35,5 +35,16 @@ export default {
       console.log(err)
       commit('toggleIsRecommendLoading', false)
     })
+  },
+  getArticleByID ({ commit }, payload) {
+    http({
+      method: 'GET',
+      url: './article',
+      params: payload
+    }).then(res => {
+      commit('setArticle', res.data)
+    }).catch(err => {
+      console.log(err)
+    })
   }
 }

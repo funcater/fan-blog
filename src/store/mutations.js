@@ -34,5 +34,8 @@ export default {
   },
   toggleIsRecommendLoading (state, isRecommendLoading) {
     state.isRecommendLoading = isRecommendLoading
+  },
+  setArticle (state, article) {
+    state.article = article
   }
 }
