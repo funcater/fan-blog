@@ -14,3 +14,11 @@ data.map((item) => {
     if (err) return handleError(err);
   })
 })
+
+new db['Message']({
+  title: '留言测试',
+  content: '一个关于留言功能的小测试',
+  date: 'Fri Oct 27 2020 13:04:15 GMT+0800 (中国标准时间)'
+}).save(function (err) {
+  if (err) return handleError(err);
+})

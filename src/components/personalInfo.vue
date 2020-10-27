@@ -9,7 +9,7 @@
       <div class="iconfont icon-email">{{user.email}}</div>
       <a :href="user.code" class="iconfont icon-code">博客源码</a>
     </div>
-    <button class="btn">留言</button>
+    <button class="btn" @click="goToMessage">留言</button>
   </div>
 </template>
 
@@ -23,6 +23,11 @@ export default {
         email: '2920998599@qq.com',
         code: 'https://github.com/funcater/fan-blog.git'
       }
+    }
+  },
+  methods: {
+    goToMessage () {
+      this.$router.push({ name: 'message' })
     }
   }
 }

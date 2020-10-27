@@ -24,9 +24,19 @@ const ArticleSchema = new Schema({
   versionKey: false
 })
 
+const MessageSchema = new Schema({
+  title: String,
+  content: String,
+  date: Date
+}, {
+  autoIndex: false,
+  versionKey: false
+})
+
 const Models = {
   User: mongoose.model('User', UserSchema),
-  Article: mongoose.model('Article', ArticleSchema)
+  Article: mongoose.model('Article', ArticleSchema),
+  Message: mongoose.model('Message', MessageSchema)
 }
 
 module.exports = Models
