@@ -27,7 +27,7 @@ export default {
 
 <style lang="less" scoped>
   .login {
-    position: absolute;
+    position: fixed;
     z-index: 99;
     width: 100%;
   }

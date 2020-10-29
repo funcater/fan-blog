@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="cover" @click="exit"></div>
     <div class="login">
-      <h3>欢迎登录<img src="../assets/images/logo.png" alt="logo"></h3>
+      <span class="label">登录</span>
       <div :class="{inputError: userIDError}">
         <input @keypress.enter="listenEnter" ref="defaultFocus" type="text" placeholder="用户名" id="userID" v-model="userID" @blur="onBlur($event)">
         <i class="iconfont icon-username"></i>
@@ -14,7 +14,6 @@
         <span>{{passwordInfo}}</span>
       </div>
       <button ref="loginBtn" class="btn" @click="confirm">登录</button>
-      <button class="btn" @click="reset">重置</button>
     </div>
   </div>
 </template>
@@ -31,9 +30,7 @@ export default {
       userID: '',
       password: '',
       userIDInfo: '',
-      passwordInfo: '',
-      userIDError: undefined,
-      passwordError: undefined
+      passwordInfo: ''
     }
   },
   methods: {
@@ -43,23 +40,12 @@ export default {
       const inputId = e.target.id
       if (value.length < 4 || value.length > 18) {
         this[inputId + 'Info'] = '请输入4-18个有效字符'
-        this[inputId + 'Error'] = true
         return
       }
       this[inputId + 'Info'] = ''
-      this[inputId + 'Error'] = false
-    },
-    reset () {
-      this.userID = ''
-      this.password = ''
-      this.userIDInfo = ''
-      this.passwordInfo = ''
-      this.userIDError = undefined
-      this.passwordError = undefined
-      this.$refs.defaultFocus.focus()
     },
     confirm () {
-      if (this.userIDError || this.passwordError) return
+      if (this.userIDInfo !== '' || this.passwordInfo !== '') return
       http({
         method: 'POST',
         url: './login',
@@ -74,7 +60,6 @@ export default {
         this.toggleLoginBlock()
         // this.$router.push({ name: '/admin/index' })
       }).catch(err => {
-        this.passwordError = true
         this.password = ''
         if (err.response && err.response.status === 401) {
           this.passwordInfo = '用户名或密码错误'
@@ -101,7 +86,7 @@ export default {
 
 <style lang="less" scoped>
   .wrapper {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -114,38 +99,35 @@ export default {
     }
     .login {
       box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.2);
-      padding: 0 4rem;
-      width: 22rem;
+      padding: 1.5rem;
+      width: 18rem;
       position: relative;
       background-color: #fff;
-      border-radius: 0.3rem;
-      h3 {
-        font-size: 2rem;
+      border-radius: 0.2rem;
+      .label {
+        font-size: 1.2rem;
+        padding-bottom: 1.2rem;
         display: flex;
         justify-content: center;
-        img {
-          width: 3rem;
-          height: 3rem;
-        }
       }
       div {
-        margin-bottom: 1.2rem;
+        margin-bottom: 1.5rem;
         position: relative;
         input {
-          padding: 0.5rem 1.5rem;
+          padding: 0.5rem 2rem;
           width: 100%;
           border: 0;
           background: transparent;
           border-bottom: 1px solid #666;
           outline: 0;
-          font-size: inherit;
+          font-size: 0.8rem;
           font-family: inherit;
           color: inherit;
         }
         i {
           position: absolute;
           transform: translateY(0.5rem);
-          left: 0;
+          left: 0.2rem;
         }
         &.inputError input{
           box-shadow: 0 0 2px 1px rgb(245, 138, 138);
@@ -159,19 +141,21 @@ export default {
         }
       }
       .btn {
-        outline: 0;
-        border: 0;
-        margin-bottom: 2rem;
-        padding: 0.5rem 1.2rem;
-        font-size: 1.2rem;
-        font-family: inherit;
-        color: inherit;
-        background: transparent;
-        margin-right: 1rem;
+        outline: none;
+        border: none;
+        background: rgb(245, 124, 4);
+        width: 100%;
+        height: 1.8rem;
+        border-radius: 0.2rem;
+        color: #fff;
         cursor: pointer;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        &:hover {
+          background: rgb(255, 102, 0);
+        }
         &:active {
-          box-shadow: inset 0 0 5px 2px rgba(0, 0, 0, 0.1);
-          transform: scale(0.98);
+          transform: translateY(0.05rem);
         }
       }
     }
